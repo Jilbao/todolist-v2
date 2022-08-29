@@ -1,9 +1,9 @@
 
 exports.getDate = () => {
 
-    let today = new Date();
+    const today = new Date();
 
-    let options = {
+    const options = {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -16,9 +16,9 @@ exports.getDate = () => {
 
 exports.getDay = () => {
 
-    let today = new Date();
+    const today = new Date();
 
-    let options = {
+    const options = {
     weekday: "long"
     };
 

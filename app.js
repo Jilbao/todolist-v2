@@ -17,8 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 //Items array
-let items = ["Buy Food", "Study"];
-let workItems = [];
+const items = ["Buy Food", "Study"];
+const workItems = [];
 
 //Listen
 app.listen(port, () => {
@@ -28,7 +28,7 @@ app.listen(port, () => {
 //Index
 app.get("/", (req, res) => {
 
-let day = date.getDay()
+let day = date.getDate()
 
   res.render("list", { listTitle: day, items: items });
 });
