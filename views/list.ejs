@@ -9,19 +9,29 @@
     
 </head>
 <body>
-     
-     <h1><%= day %></h1>
+     <div class="box" id="heading">
+        <h1><%= day %></h1>
+     </div>
+     <div class="box">   
+        
+            <% for (let i = 0; i<items.length; i++){ %>
+               
+               <div class="item">
+                    <input type="checkbox">
+                    <p><%= items[i] %> </p>
+               </div>
+                
+            <% } %>
+       
     
-    <ul>
-        <% for (var i = 0; i<items.length; i++){ %>
-            <li><%= items[i] %> </li> 
-        <% } %>
-    </ul>
-
-    <form action="/" method="post">
-        <input type="text" name="newItem" id="">
-        <button type="submit">Add</button>
-    </form>
+        <form class="item" action="/" method="post">
+            <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
+            <button type="submit" name="button">+</button>
+        </form>
+    
+    </div>
+    
+    
 
     
 </body>

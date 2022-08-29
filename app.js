@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 //Items array
-let items = [];
+let items = ["Buy Food", "Study"];
 
 //Listen
 app.listen(port, () => {
