@@ -27,7 +27,8 @@ app.listen(port, () => {
 
 //Index
 app.get("/", (req, res) => {
-  
+
+let day = date()
 
   res.render("list", { listTitle: day, items: items });
 });
