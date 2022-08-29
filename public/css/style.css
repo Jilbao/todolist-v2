@@ -93,3 +93,13 @@ footer {
   color: rgba(0, 0, 0, 0.5);
   text-align: center;
 }
+.bottom-container a{
+  color: #11999e;
+  text-decoration: none;
+  padding: 20px;
+}
+.bottom-container p{
+  margin: 25px auto 0 auto;
+  padding-top: 20px;
+  padding-bottom: 45px;
+}

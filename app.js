@@ -17,6 +17,7 @@ app.use(express.static("public"));
 
 //Items array
 let items = ["Buy Food", "Study"];
+let workItems = [];
 
 //Listen
 app.listen(port, () => {
@@ -36,12 +37,25 @@ app.get("/", (req, res) => {
   
   let day = today.toLocaleDateString("en-US", options);
 
-  res.render("list", { day: day, items: items });
+  res.render("list", { listTitle: day, items: items });
 });
 
 app.post("/", (req, res)=>{
-    let newItem = req.body.newItem;
-    items.push(newItem);
-    res.redirect("/")
+
+    let newItem = req.body.newItem
+
+    if (req.body.list === "Work List") {
+      workItems.push(newItem);
+      res.redirect("/work")  
+    }else{
+      items.push(newItem);
+      res.redirect("/")
+    }
+    
+    
+});
+
+app.get("/work", (req, res)=>{
+  res.render("list", {listTitle: "Work List", items: workItems})
 });
 
