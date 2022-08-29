@@ -1,5 +1,6 @@
 //Requires
 const express = require("express");
+const date = require(__dirname + "/date.js")
 
 //Setting app and port
 const app = express();
@@ -26,16 +27,7 @@ app.listen(port, () => {
 
 //Index
 app.get("/", (req, res) => {
-  let today = new Date();
   
-  let options = {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  };
-  
-  let day = today.toLocaleDateString("en-US", options);
 
   res.render("list", { listTitle: day, items: items });
 });
