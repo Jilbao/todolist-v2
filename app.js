@@ -12,7 +12,11 @@ app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-var items = [];
+//Static
+app.use(express.static("public"));
+
+//Items array
+let items = [];
 
 //Listen
 app.listen(port, () => {
@@ -21,22 +25,22 @@ app.listen(port, () => {
 
 //Index
 app.get("/", (req, res) => {
-  var today = new Date();
+  let today = new Date();
   
-  var options = {
+  let options = {
     weekday: "long",
     day: "numeric",
     month: "long",
     year: "numeric"
   };
   
-  var day = today.toLocaleDateString("en-US", options);
+  let day = today.toLocaleDateString("en-US", options);
 
   res.render("list", { day: day, items: items });
 });
 
 app.post("/", (req, res)=>{
-    newItem = req.body.newItem;
+    let newItem = req.body.newItem;
     items.push(newItem);
     res.redirect("/")
 });
