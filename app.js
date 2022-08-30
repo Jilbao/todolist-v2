@@ -31,36 +31,25 @@ const itemSchema = {
 //Item Model
 const ItemModel = mongoose.model("item", itemSchema);
 
-// //Adding Default Items in DB
-// const eat = new ItemModel({
-//   name: "Eat!"
-// });
-// const study = new ItemModel({
-//   name: "Study!"
-// });
-// const sleep = new ItemModel({
-//   name: "Sleep!"
-// });
-// ItemModel.insertMany([eat, study, sleep], (err)=>{
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log("Default items created!");
-//   }
-// });
-
-//Items Array to render
-var items = []
-ItemModel.find((err, docs)=>{
-  if (err) {
-    console.log(err);
-  } else {
-    docs.forEach(element => {
-      items.push(element.name);
-    });
-    
-  }
-});
+//Adding Default Items in DB
+function createDefault() {
+  const eat = new ItemModel({
+    name: "Eat!"
+  });
+  const study = new ItemModel({
+    name: "Study!"
+  });
+  const sleep = new ItemModel({
+    name: "Sleep!"
+  });
+  ItemModel.insertMany([eat, study, sleep], (err)=>{
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Default items created!");
+    }
+  });
+}
 
 //Listen
 app.listen(port, () => {
@@ -70,23 +59,36 @@ app.listen(port, () => {
 //Index
 app.get("/", (req, res) => {
 
-let day = date.getDate()
+  //Items to render
+  ItemModel.find((err, items)=>{
+    if (err) {
+      console.log(err);
+    } else {
+      //Check if items exist, if not create default
+      if (items.length === 0) {
+        createDefault();
+        res.redirect("/");
+      }else {
+        let day = date.getDate();
+        res.render("list", { listTitle: day, items: items });
+      }
+    }
+   });
 
-  res.render("list", { listTitle: day, items: items });
 });
 
 app.post("/", (req, res)=>{
 
-    let newItem = req.body.newItem
+    const newItem = req.body.newItem;
 
-    if (req.body.list === "Work List") {
-      workItems.push(newItem);
-      res.redirect("/work")  
-    }else{
-      items.push(newItem);
-      res.redirect("/")
-    }
-    
+    ItemModel.insertMany({name: `${newItem}`},err => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Item successfully added!");
+        res.redirect("/");
+      }
+    })   
     
 });
 
