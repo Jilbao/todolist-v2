@@ -1,6 +1,7 @@
 //Requires
 const express = require("express");
 const date = require(__dirname + "/date.js")
+const mongoose = require("mongoose")
 
 //Setting app and port
 const app = express();
@@ -15,6 +16,22 @@ app.use(express.urlencoded({ extended: true }));
 
 //Static
 app.use(express.static("public"));
+
+//Mongo connection
+mongoose.connect("mongodb://localhost:27017/todolistDB");
+
+//Item Schema
+const itemSchema = {
+  name: {
+    type: String,
+    required: true
+  }
+};
+
+//Item Model
+const ItemModel = mongoose.model("item", itemSchema);
+
+
 
 //Items array
 const items = ["Buy Food", "Study"];
