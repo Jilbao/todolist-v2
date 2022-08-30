@@ -155,18 +155,34 @@ app.post("/", (req, res)=>{
 
 app.post("/delete", (req, res) => {
   
+  //Get item id and list name from checkbox
   const deleteItem = req.body.checkbox;
-  console.log(deleteItem);
-  ItemModel.findByIdAndDelete(deleteItem,err =>{
-    if (err) {
-      console.log(err);
-    } else {
-      setTimeout(() => {
-        console.log("Item successfully deleted.");
-        res.redirect("/");
-      }, 1);      
-    }
-  })
+  const deleteItemId = deleteItem.slice(0,24);
+  const deleteListName = deleteItem.slice(25);
+
+  //Check main list or custom list
+  if (deleteListName === date.getDate()) {
+    //delete item from main list
+    ItemModel.findByIdAndDelete(deleteItemId,err =>{
+      if (err) {
+        console.log(err);
+      } else {
+        setTimeout(() => {
+          console.log("Item successfully deleted.");
+          res.redirect("/");
+        }, 1);      
+      }
+    });    
+  } else {
+    //delete item from custom list
+    ListModel.findOneAndUpdate({name: deleteListName}, {$pull: {items: {_id: deleteItemId}}}, (err, results) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect("/"+ deleteListName);
+      }
+    });
+  }
 });
 
 
