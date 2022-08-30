@@ -50,11 +50,15 @@ const ItemModel = mongoose.model("item", itemSchema);
 // });
 
 //Items Array to render
-var items = ItemModel.find((err)=>{
+var items = []
+ItemModel.find((err, docs)=>{
   if (err) {
-    console.log(err, docs);
+    console.log(err);
   } else {
-    items = docs.name
+    docs.forEach(element => {
+      items.push(element.name);
+    });
+    
   }
 });
 
