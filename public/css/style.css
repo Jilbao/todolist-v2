@@ -10,6 +10,10 @@ h1 {
   padding: 10px;
 }
 
+.error h2, .error p{
+  text-align: center;
+}
+
 .box {
   max-width: 400px;
   margin: 50px auto;

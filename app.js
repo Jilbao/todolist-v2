@@ -84,6 +84,7 @@ app.post("/", (req, res)=>{
     ItemModel.insertMany({name: `${newItem}`},err => {
       if (err) {
         console.log(err);
+        res.status(404).redirect("/error");
       } else {
         console.log("Item successfully added!");
         res.redirect("/");
@@ -96,14 +97,14 @@ app.post("/delete", (req, res) => {
   
   const deleteItem = req.body.checkbox;
   
-  ItemModel.deleteOne({name: deleteItem},err =>{
+  ItemModel.findByIdAndDelete(deleteItem,err =>{
     if (err) {
       console.log(err);
     } else {
       setTimeout(() => {
         console.log("Item successfully deleted.");
         res.redirect("/");
-      }, 400);      
+      }, 1);      
     }
   })
 });
@@ -116,3 +117,6 @@ app.get("/about", (req, res) => {
   res.render("about");
 });
 
+app.get("/error", (req, res)=>{
+  res.render("error");
+});
