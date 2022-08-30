@@ -90,11 +90,11 @@ input[type="text"]:focus {
 
 footer {
   color: white;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.5);
   text-align: center;
 }
 .bottom-container a{
-  color: #11999e;
+  color: #fff;
   text-decoration: none;
   padding: 20px;
 }
