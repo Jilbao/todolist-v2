@@ -1,7 +1,8 @@
 //Requires
 const express = require("express");
-const date = require(__dirname + "/date.js")
-const mongoose = require("mongoose")
+const date = require(__dirname + "/date.js");
+const mongoose = require("mongoose");
+const _ = require("lodash");
 
 //Setting app and port
 const app = express();
@@ -91,7 +92,7 @@ app.get("/", (req, res) => {
 
 //Custom
 app.get("/:customListName", (req, res) => {
-  const customListName = req.params.customListName;
+  const customListName = _.capitalize(req.params.customListName);
 
   ListModel.findOne({name: customListName},(err, foundList) => {
     if (err) {
@@ -129,7 +130,6 @@ app.post("/", (req, res)=>{
           console.log(err);
           res.status(404).redirect("/error");
         } else {
-          console.log("Item successfully added!");
           res.redirect("/");
         };
       }); 
@@ -141,7 +141,6 @@ app.post("/", (req, res)=>{
           console.log(err);
           res.status(404).redirect("/error");
         } else {
-          console.log("Item successfully added!");
           foundList.items.push({name: `${newItem}`});
           foundList.save();
           res.redirect("/" + listName);
@@ -168,7 +167,6 @@ app.post("/delete", (req, res) => {
         console.log(err);
       } else {
         setTimeout(() => {
-          console.log("Item successfully deleted.");
           res.redirect("/");
         }, 1);      
       }
