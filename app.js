@@ -31,11 +31,23 @@ const itemSchema = {
 //Item Model
 const ItemModel = mongoose.model("item", itemSchema);
 
-
-
-//Items array
-const items = ["Buy Food", "Study"];
-const workItems = [];
+//Adding Default Items in DB
+const eat = new ItemModel({
+  name: "Eat!"
+});
+const study = new ItemModel({
+  name: "Study!"
+});
+const sleep = new ItemModel({
+  name: "Sleep!"
+});
+ItemModel.insertMany([eat, study, sleep], (err)=>{
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Default items created!");
+  }
+});
 
 //Listen
 app.listen(port, () => {
