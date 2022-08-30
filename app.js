@@ -110,34 +110,53 @@ app.get("/:customListName", (req, res) => {
           res.render("list", {listTitle: foundList.name, items: foundList.items});
         };
     };
-    
-    
-  
+      
   });
   
   
 });
 
 app.post("/", (req, res)=>{
-
+    //Get form data
     const newItem = req.body.newItem;
+    const listName = req.body.list;
+    //Check if list is main or custom
+    if (listName === date.getDate()) {
+        
+        //If main list, add item to main list
+        ItemModel.insertMany({name: `${newItem}`},err => {
+        if (err) {
+          console.log(err);
+          res.status(404).redirect("/error");
+        } else {
+          console.log("Item successfully added!");
+          res.redirect("/");
+        };
+      }); 
+    }else {
 
-    ItemModel.insertMany({name: `${newItem}`},err => {
-      if (err) {
-        console.log(err);
-        res.status(404).redirect("/error");
-      } else {
-        console.log("Item successfully added!");
-        res.redirect("/");
-      }
-    })   
+      //if custom list, find custom list and add item to that list
+      ListModel.findOne({name: listName}, (err, foundList)=>{
+        if (err) {
+          console.log(err);
+          res.status(404).redirect("/error");
+        } else {
+          console.log("Item successfully added!");
+          foundList.items.push({name: `${newItem}`});
+          foundList.save();
+          res.redirect("/" + listName);
+        };
+        
+      });
+
+    };    
     
 });
 
 app.post("/delete", (req, res) => {
   
   const deleteItem = req.body.checkbox;
-  
+  console.log(deleteItem);
   ItemModel.findByIdAndDelete(deleteItem,err =>{
     if (err) {
       console.log(err);
