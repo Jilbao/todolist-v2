@@ -93,7 +93,19 @@ app.post("/", (req, res)=>{
 });
 
 app.post("/delete", (req, res) => {
-  console.log(req.body);
+  
+  const deleteItem = req.body.checkbox;
+  
+  ItemModel.deleteOne({name: deleteItem},err =>{
+    if (err) {
+      console.log(err);
+    } else {
+      setTimeout(() => {
+        console.log("Item successfully deleted.");
+        res.redirect("/");
+      }, 400);      
+    }
+  })
 });
 
 app.get("/work", (req, res)=>{
