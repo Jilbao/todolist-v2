@@ -31,18 +31,23 @@ const itemSchema = {
 //Item Model
 const ItemModel = mongoose.model("item", itemSchema);
 
+
+
 //Adding Default Items in DB
-function createDefault() {
-  const eat = new ItemModel({
-    name: "Eat!"
-  });
-  const study = new ItemModel({
-    name: "Study!"
-  });
-  const sleep = new ItemModel({
-    name: "Sleep!"
-  });
-  ItemModel.insertMany([eat, study, sleep], (err)=>{
+const eat = new ItemModel({
+  name: "Eat!"
+});
+const study = new ItemModel({
+  name: "Study!"
+});
+const sleep = new ItemModel({
+  name: "Sleep!"
+});
+
+const defaultItems = [eat,study,sleep]
+
+function createDefault() { 
+  ItemModel.insertMany(defaultItems, (err)=>{
     if (err) {
       console.log(err);
     } else {
@@ -51,10 +56,17 @@ function createDefault() {
   });
 }
 
-//Listen
-app.listen(port, () => {
-  console.log(`Server is running on Port: ${port}`);
-});
+//Custom List Schema
+const listSchema = {
+  name: {
+    type: String,
+    required: true
+  },
+  items: [itemSchema]
+};
+const ListModel = mongoose.model("list", listSchema);
+
+
 
 //Index
 app.get("/", (req, res) => {
@@ -75,6 +87,35 @@ app.get("/", (req, res) => {
     }
    });
 
+});
+
+//Custom
+app.get("/:customListName", (req, res) => {
+  const customListName = req.params.customListName;
+
+  ListModel.findOne({name: customListName},(err, foundList) => {
+    if (err) {
+      console.log(err);
+    } else {
+        if (!foundList){
+          //Create a new list 
+            const list = new ListModel({
+            name: customListName,
+            items: defaultItems
+          });
+          list.save();
+          res.redirect(`/${customListName}`);
+        } else {
+          //Show existing list
+          res.render("list", {listTitle: foundList.name, items: foundList.items});
+        };
+    };
+    
+    
+  
+  });
+  
+  
 });
 
 app.post("/", (req, res)=>{
@@ -109,9 +150,7 @@ app.post("/delete", (req, res) => {
   })
 });
 
-app.get("/work", (req, res)=>{
-  res.render("list", {listTitle: "Work List", items: workItems})
-});
+
 
 app.get("/about", (req, res) => {
   res.render("about");
@@ -119,4 +158,9 @@ app.get("/about", (req, res) => {
 
 app.get("/error", (req, res)=>{
   res.render("error");
+});
+
+//Listen
+app.listen(port, () => {
+  console.log(`Server is running on Port: ${port}`);
 });
