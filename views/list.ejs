@@ -5,10 +5,10 @@
         <h1><%= listTitle %></h1>
      </div>
      <div class="box">   
-        <form action="/" method="post">
+        <form action="/delete" method="post">
             <% items.forEach(element => { %>
                 <div class="item">
-                    <input type="checkbox">
+                    <input onchange="this.form.submit()" name="checkbox" value="<%= element.name %>" type="checkbox">
                     <p><%= element.name %> </p>
                </div>
             <% }) %> 

@@ -92,6 +92,10 @@ app.post("/", (req, res)=>{
     
 });
 
+app.post("/delete", (req, res) => {
+  console.log(req.body);
+});
+
 app.get("/work", (req, res)=>{
   res.render("list", {listTitle: "Work List", items: workItems})
 });
