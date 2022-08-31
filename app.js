@@ -3,11 +3,10 @@ const express = require("express");
 const date = require(__dirname + "/date.js");
 const mongoose = require("mongoose");
 const _ = require("lodash");
-require('dotenv').config();
 
 //Setting app and port
 const app = express();
-const port = 3000;
+let port = process.env.PORT;
 
 //EJS
 app.set("view engine", "ejs");
@@ -195,6 +194,10 @@ app.get("/error", (req, res)=>{
 });
 
 //Listen
+if (port == null || port == "") {
+  port = 3000;
+}
+
 app.listen(port, () => {
   console.log(`Server is running on Port: ${port}`);
 });
