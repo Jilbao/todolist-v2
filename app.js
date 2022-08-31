@@ -3,6 +3,7 @@ const express = require("express");
 const date = require(__dirname + "/date.js");
 const mongoose = require("mongoose");
 const _ = require("lodash");
+require('dotenv').config();
 
 //Setting app and port
 const app = express();
@@ -19,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 //Mongo connection
-mongoose.connect("mongodb://localhost:27017/todolistDB");
+mongoose.connect(process.env.db_url);
 
 //Item Schema
 const itemSchema = {
